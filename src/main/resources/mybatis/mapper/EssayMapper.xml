@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cananblog.mapper.EssayMapper">
+    <!--配置了java对象与数据库表之间的映射-->
+    <select id="queryEssayList" resultType="Essay">
+        select *from essay
+    </select>
+    <insert id="addEssay" parameterType="Essay">
+        insert into essay(essaytitle,essaycontent,essayauthor,label,updatetime,original,essaypicture,essaydescribe) values(
+        #{essaytitle},#{essaycontent},#{essayauthor},#{label},#{updatetime},#{original},#{essaypicture},#{essaydescribe})
+    </insert>
+    <delete id="deleteEssayById" parameterType="long">
+        delete from essay where essayid = #{id}
+    </delete>
+    <select id="queryEssayById" parameterType="long" resultType="Essay">
+        select *from essay where essayid = #{id}
+    </select>
+    <update id="modifyEssayById" parameterType="Essay">
+        update essay set essaytitle = #{essaytitle}, essaycontent = #{essaycontent},essayauthor = #{essayauthor},
+        label = #{label},updatetime = #{updatetime},original = #{original},essaypicture = #{essaypicture},essaydescribe = #{essaydescribe} where essayid = #{essayid}
+    </update>
+    <select id="queryEssayNumber" resultType="long">
+        select count(1) from essay;
+    </select>
+    <select id="queryLastId" resultType="long">
+--         select last_insert_id();
+        select max(essayid) from essay;
+    </select>
+    <update id="increaseVisits" parameterType="long">
+        update essay set visits = visits + 1 where essayid = #{id};
+    </update>
+    <select id="queryVisits" resultType="long">
+        select sum(visits) from essay;
+    </select>
+    <select id="queryEssayContainLabel" parameterType="Essay" resultType="Essay">
+        select *from essay where label like CONCAT('%',#{label},'%');
+    </select>
+    <select id="queryhotEssay" resultType="Essay">
+        select *from essay order by visits desc limit 6;
+    </select>
+    <select id="queryOriginalNumber" resultType="long">
+        select count(1) from essay where original = '原创';
+    </select>
+    <select id="queryMatchingEssay" resultType="Essay">
+        select *from essay where essaytitle like #{text} || essaydescribe like #{text};
+    </select>
+</mapper>
