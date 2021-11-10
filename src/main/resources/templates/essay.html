@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="renderer" content="webkit">
+	<meta name="viewport" content="width=device-width" />
+	<meta name="author" content="www.yanshisan.cn" />
+	<meta name="robots" content="all" />
+	<title>文章</title>
+	<link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/layui/css/layui.css" />
+	<link rel="stylesheet" href="/css/master.css" />
+	<link rel="stylesheet" href="/css/gloable.css" />
+	<link rel="stylesheet" href="/css/nprogress.css" />
+	<link rel="stylesheet" href="/css/blog.css" />
+	<link href="/js/bootstrap.js">
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+	<style>
+
+	</style>
+</head>
+<body>
+<!--<audio src="/music/star.mp3" autoplay hidden loop></audio>-->
+
+<div class="header">
+</div>
+<header class="gird-header">
+	<div class="header-fixed">
+		<div class="header-inner">
+<!--			<iframe src="/essayupload/star.mp3" hidden>-->
+<!--			</iframe>-->
+<!--			<audio id="bgMusic" src="/music/star.mp3" autoplay preload loop="loop"></audio>-->
+			<nav class="nav" id="nav">
+				<ul>
+					<li><a href="/index">首页</a></li>
+					<li><a href="/essay">博客</a></li>
+					<li><a href="/message">留言</a></li>
+					<li><a href="/link">友链</a></li>
+					<li><a href="/privateletter">私信</a></li>
+				</ul>
+			</nav>
+			<a href="/User/QQLogin" class="blog-user">
+				<i class="fa fa-qq"></i>
+			</a>
+
+			<a class="phone-menu">
+				<i></i>
+				<i></i>
+				<i></i>
+			</a>
+		</div>
+	</div>
+</header>
+
+<div class="doc-container" id="doc-container">
+	<div class="container-fixed">
+		<div class="col-content">
+			<div class="inner">
+				<article class="article-list bloglist" id="LAY_bloglist" th:each="essay:${essays.list}">
+					<section class="article-item zoomIn article">
+<!--						<div class="fc-flag">置顶</div>-->
+						<h5 class="title">
+							<span class="fc-blue" th:text="'【' + ${essay.getOriginal()} + '】'">【原创】</span>
+							<a th:href="'/'+'readessayid=' + ${essay.getEssayid()}" th:text="${essay.getEssaytitle()}"></a>
+						</h5>
+						<div class="time">
+							<span class="day" th:text="${essay.getUpdatetime().substring(essay.getUpdatetime().lastIndexOf('-')+1,essay.getUpdatetime().lastIndexOf(' '))}"></span>
+							<span class="month fs-18" th:text="${essay.getUpdatetime().substring(essay.getUpdatetime().indexOf('-')+1,essay.getUpdatetime().lastIndexOf('-'))}"><span class="fs-14">月</span></span>
+							<span class="year fs-18 ml10" th:text="${essay.getUpdatetime().substring(0,essay.getUpdatetime().indexOf('-'))}"></span>
+						</div>
+						<div class="content">
+							<a href="read.html" class="cover img-light" th:href="'/'+'readessayid=' + ${essay.getEssayid()}">
+								<img th:src="'/essayupload/' + ${essay.getEssayid()} + '/coverimg.jpg'">
+							</a>
+							<div th:text="${essay.getEssaydescribe()}" ></div>
+							<img src="/img/dian.jpg" width="140px">
+<!--							Spire.Doc for .NET是一款由E-iceblue公司开发的专业的Word .NET类库，使用该工具开发人员可以在任意.NET平台（C#，VB.NET，ASP.NET）上快速创建，读取，写入，转换，打印Word文档。作为一个独立的Word 组件，Spire.Doc的运行无需安装Microsoft Word。而且，它可以将Microsoft Word文档创建功能集成到开发者的任何.NET应用程序。-->
+						</div>
+						<div class="read-more">
+							<a th:href="'/'+'readessayid=' + ${essay.getEssayid()}" class="fc-black f-fwb">继续阅读</a>
+						</div>
+						<aside class="f-oh footer">
+							<div class="f-fl tags"``>
+								<span class="fa fa-tags fs-16"></span>
+								<a class="tag" th:text="${essay.getLabel().replace(',','  ')}"></a>
+							</div>
+
+							<div class="f-fr">
+									<span class="read">
+										<i class="fa fa-eye fs-16"></i>
+										<i class="num" th:text="${essay.getVisits()}"></i>
+									</span>
+								<span class="ml20">
+										<i class="fa fa-comments fs-16"></i>
+										<a href="javascript:void(0)" class="num fc-grey">1</a>
+									</span>
+							</div>
+						</aside>
+					</section>
+				</article>
+				<div class="text-center">
+					<ul class="pagination">
+						<li th:class="${essays.pageNum == 1 ? 'page-item disabled' : 'page-item'}"> <a class="page-link" th:href="@{/essay(pageNum=${essays.hasPreviousPage}?${essays.prePage}:1)}">上一页</a> </li>
+						<li th:class="${essays.pageNum == 1 ? 'page-item disabled' : 'page-item'}"> <a class="page-link" th:href="@{/essay(pageNum=1)}">首页</a> </li>
+						<li class="page-item active"> <a class="page-link" th:href="@{/essay(pageNum=${essays.pageNum})}" th:text="${essays.pageNum}" >1</a> </li>
+						<li class="page-item" th:if="${essays.pageNum+1} <= ${essays.pages}"> <a class="page-link" th:href="@{/essay(pageNum=${essays.pageNum+1})}" th:text="${essays.pageNum+1}" >2</a> </li>
+						<li class="page-item" th:if="${essays.pageNum+2} <= ${essays.pages}"> <a class="page-link" th:href="@{/essay(pageNum=${essays.pageNum+2})}" th:text="${essays.pageNum+2}">3</a> </li>
+						<li class="page-item disabled"><span class="page-link" th:if="${essays.pages} - ${essays.pageNum} > 2">...</span></li>
+						<li class="page-item"> <a class="page-link" href="once?page=74" th:if="${essays.pages} - ${essays.pageNum} > 2" th:text="${essays.pages}"th:href="@{/essay(pageNum=${essays.pages})}" ></a> </li>
+						<li th:class="${essays.pageNum == essays.pages ? 'page-item disabled' : 'page-item'}"> <a class="page-link" href="once?page=2" th:href="@{/essay(pageNum=${essays.hasNextPage}?${essays.nextPage}:${essays.pages})}">下一页</a> </li>
+					</ul>
+				</div>
+
+				<!--				<div style="background-color:rgba(255,255,255,.5); margin-top: 10px;">-->
+<!--					<strong style="color: #178888;">-->
+<!--						<p>当前第<span th:text="${essays.pageNum}" style="margin:0 15px;"></span>页,总<span th:text="${essays.pages}" style="margin:0 15px;"></span>页 共<span th:text="${essays.total}" style="margin:0 15px;"></span>条记录</p>-->
+<!--					</strong>-->
+<!--					<a th:href="@{/essay}"><strong style="color: #000;">首页</strong></a>&nbsp;-->
+<!--					<a th:href="@{/essay(pageNum=${essays.hasPreviousPage}?${essays.prePage}:1)}"><strong style="color: #000;">上一页</strong></a>-->
+<!--					<a th:href="@{/essay(pageNum=${essays.hasNextPage}?${essays.nextPage}:${essays.pages})}"><strong style="color: #000;">下一页</strong></a>&nbsp;-->
+<!--					<a th:href="@{/essay(pageNum=${essays.pages})}"><strong style="color: #000;">尾页</strong></a>-->
+<!--				</div>-->
+
+			</div>
+		</div>
+		<div class="col-other">
+			<div class="inner">
+				<div class="other-item" id="categoryandsearch">
+					<div class="search">
+						<label class="search-wrap">
+							<input type="text" id="searchtxt" placeholder="输入关键字搜索" />
+							<span class="search-icon">
+								<i class="fa fa-search"></i>
+							</span>
+						</label>
+						<ul class="search-result"></ul>
+					</div>
+					<ul class="category mt20" id="category" >
+						<li data-index="0" class="slider"></li>
+						<li data-index="1"><a href="/classifyessay?type=java">Java</a></li>
+						<li data-index="2"><a href="/classifyessay?type=javaweb">JavaWeb</a></li>
+						<li data-index="3"><a href="/classifyessay?type=操作系统">操作系统</a></li>
+						<li data-index="4"><a href="/classifyessay?type=计算机网络">计算机网络</a></li>
+						<li data-index="5"><a href="/classifyessay?type=吹水">吹水</a></li>
+						<li data-index="6"><a href="/classifyessay?type=Springboot">Springboot</a></li>
+						<li data-index="7"><a href="/classifyessay?type=算法">算法</a></li>
+					</ul>
+
+				</div>
+				<!--右边悬浮 平板或手机设备显示-->
+				<div class="category-toggle"><i class="layui-icon">&#xe603;</i></div>
+				<div class="article-category">
+					<div class="article-category-title">分类导航</div>
+					<a href="/essay/java">Java</a>
+					<a href="/essay/javaweb">JavaWeb</a>
+					<a href="/essay/操作系统">操作系统</a>
+					<a href="/essay/计算机网络">计算机网络</a>
+					<a href="/essay/吹水">吹水</a>
+					<a href="/essay/Springboot">Springboot</a>
+					<a href="/essay/算法">算法</a>
+					<div class="f-cb"></div>
+				</div>
+				<!--遮罩-->
+				<div class="blog-mask animated layui-hide"></div>
+				<div class="other-item">
+					<h5 class="other-item-title">热门文章</h5>
+					<div class="inner">
+						<ul class="hot-list-article">
+							<li th:each="essay:${hotessay}"><a th:href="'/readessayid=' + ${essay.getEssayid()}" th:text="${essay.getEssaytitle()}"></a></li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="grid-footer">
+	<div class="footer-fixed">
+		<div class="copyright">
+			<div class="info">
+				<div class="contact">
+					<a href="javascript:void(0)" class="github" target="_blank"><i class="fa fa-github"></i></a>
+					<a href="https://wpa.qq.com/msgrd?v=3&uin=930054439&site=qq&menu=yes" class="qq" target="_blank" title="930054439"><i class="fa fa-qq"></i></a>
+					<a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=gbiysbG0tbWyuMHw8K-i7uw" class="email" target="_blank" title="930054439@qq.com"><i class="fa fa-envelope"></i></a>
+					<a href="javascript:void(0)" class="weixin"><i class="fa fa-weixin"></i></a>
+				</div>
+				<p class="mt05">
+					Copyright
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>
+<script src="/layui/layui.js"></script>
+<script src="/js/yss/gloable.js"></script>
+<script src="/js/plugins/nprogress.js"></script>
+<script>NProgress.start();</script>
+<script src="/js/yss/article.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script>
+	window.onload = function () {
+		NProgress.done();
+	};
+	$("#searchtxt").keypress(function (e) {
+		if(e.which == 13){
+			var text = $("#searchtxt").val();
+			location.href = "/searchessay?text=" + text;
+		}
+	})
+</script>
+</body>
+</html>

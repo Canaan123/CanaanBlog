@@ -1,0 +1,237 @@
+<!doctype html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sufee Admin - HTML5 Admin Template</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+
+    <link rel="stylesheet" href="/vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendors/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendors/themify-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/vendors/selectFX/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="/vendors/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+<!--    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>-->
+    <style>
+        #a{
+            position: absolute;
+            width: 360px;
+            height: auto;
+            background-color: #5fb5bb;
+            left: 50%;
+            top: 50%;
+            margin-left: -180px;
+            margin-top: -105px;
+        }
+        #b{
+            width: auto;
+            height: auto;
+            padding: 4px;
+            text-align: center;
+            margin: 15px;
+        }
+        .tt{
+            color: white;
+            size: 30px;
+        }
+        #close{
+            top: 0px;
+            width: 20px;
+            height: 20px;
+            right: 0px;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Left Panel -->
+    <aside id="left-panel" class="left-panel" th:insert="~{admin/copypart :: copyleft(act='essaytable')}">
+    </aside>
+
+    <div id="right-panel" class="right-panel">
+
+<!--        &lt;!&ndash; Header&ndash;&gt;-->
+<!--        <header id="header" class="header" th:insert="admin/copypart :: copyright">-->
+<!--        &lt;!&ndash; Header&ndash;&gt;-->
+        <div class="breadcrumbs">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>评论管理</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Table</a></li>
+                            <li class="active">Data table</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content mt-3">
+            <div class="animated fadeIn">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">Data Table</strong>
+                            </div>
+
+                            <div class="card-body">
+<!--                                <button class="btn btn-info" onclick="addBut()" style="float: right">添加</button>-->
+                                <table id="bootstrap-data-table-export" class="table table-striped table-bordered" >
+                                    <thead>
+                                        <tr>
+                                            <th>评论编号</th>
+                                            <th>评论内容</th>
+                                            <th>评论文章编号</th>
+                                            <th>评论时间</th>
+                                            <th>评论人编号</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="review:${reviews}">
+                                            <td th:text="${review.getReviewid()}"></td>
+                                            <td th:text="${review.getReviewcontent()}"></td>
+                                            <td th:text="${review.getReviewessayid()}"></td>
+                                            <td th:text="${review.getReviewtime()}"></td>
+                                            <td th:text="${review.getReviewmanid()}"></td>
+                                            <td>
+                                                <button class="btn btn-info" onclick="modiBut(this)">修改</button>
+                                                <button class="btn btn-danger" onclick="deletebyid(this)">删除</button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+
+                                <div id="a" style="display:none;">
+                                    <img src="/img/d13.png" id="close" onclick="clossBut()">
+                                    <div id="b">
+                                        <h3 style="color: #ffffff"> 评论编写</h3><br>
+                                        <form role="form" action="/admin/postreview" method="post">
+                                            <strong class="tt">评论编号&emsp;<input type="text" name="id" style="color: black" id="d1"></strong><br>
+                                            <strong class="tt">评论内容&emsp;<input type="text" name="content" style="color: black" id="d2"></strong><br>
+                                            <br>
+                                            <input type="submit">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div><!-- .animated -->
+        </div><!-- .content -->
+
+
+    </div><!-- /#right-panel -->
+
+    <!-- Right Panel -->
+
+<!--    <script src="https://cdn.bootcss.com/sweetalert/2.1.0/sweetalert.min.js"></script>-->
+    <link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.css" rel="stylesheet">
+    <script src="/js/sweetalert.min.js"></script>
+    <script src="/vendors/jquery/dist/jquery.js"></script>
+    <script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+
+    <link href="https://cdn.bootcss.com/sweetalert/1.1.3/sweetalert.css" rel="stylesheet">
+    <script src="/js/sweetalert.min.js"></script>
+    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <script src="/assets/js/init-scripts/data-table/datatables-init.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script>
+
+        // function addBut(){
+        //     document.getElementById("a").style.display="block";//显
+        // }
+        function clossBut(){
+            document.getElementById("a").style.display="none";//隐藏
+            document.getElementById("d1").value = "";
+            document.getElementById("d2").value = "";
+        }
+        function modiBut(obj){
+            document.getElementById("a").style.display="block";//显
+            var x = $(obj).parent().parent().find("td");
+            var y0 = x.eq(0).text();
+            var y1 = x.eq(1).text();
+            document.getElementById("d1").value = y0;
+            document.getElementById("d2").value = y1;
+        }
+        function deletebyid(obj){
+            var x = $(obj).parent().parent().find("td");
+            var y = x.eq(0).text();//评论的id
+            swal({
+                title : "确定要删除选定的文章吗？",
+                text : "单击框外进行取消",
+                type : "warning",
+                showConfirmButton: true,
+                confirmButtonColor : '#DD6B55',
+            }).then(
+                function (isConfirm) {
+                    if (isConfirm){
+                        $.ajax({
+                            type: "post",
+                            url: "/admin/deletereview",
+                            data:"id=" + y,
+                            cache: false,
+                            async : false,
+                            success: function (ans){
+                                swal(ans);
+                                window.location.reload();
+                            },error:function (XMLHttpRequest, textStatus, errorThrown) {
+                                swal("删除失败！");
+                            }
+                        });
+                    }
+
+            });
+
+        }
+        function goModify(obj){
+            var x = $(obj).parent().parent().find("td");
+            var y = x.eq(0).text();//文章的id
+        }
+        function goedit(){
+            window.location.href = "/admin/editessay";
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width" />
+    <title>文章阅读</title>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="layui/css/layui.css" />
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="stylesheet" href="css/gloable.css" />
+    <link rel="stylesheet" href="css/nprogress.css" />
+    <link rel="stylesheet" href="css/blog.css" />
+    <script src="https://cdn.bootcdn.net/ajax/libs/marked/2.1.3/marked.js"></script>
+    <link rel="stylesheet" href="/css/typo.css"/>
+
+    <link href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/monokai-sublime.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
+
+</head>
+<body>
+    <div class="header">
+    </div>
+    <header class="gird-header">
+        <div class="header-fixed">
+            <div class="header-inner">
+                <a href="javascript:void(0)" class="header-logo" id="logo">Mr.Yss</a>
+                <nav class="nav" id="nav">
+                    <ul>
+                        <li><a href="/index">首页</a></li>
+                        <li><a href="/essay">博客</a></li>
+                        <li><a href="/message">留言</a></li>
+                        <li><a href="/link">友链</a></li>
+                        <li><a href="/privateletter">私信</a></li>
+                    </ul>
+                </nav>
+                <a href="#" class="blog-user">
+                    <i class="fa fa-qq"></i>
+                </a>
+                <a class="phone-menu">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="doc-container" id="doc-container">
+        <div class="container-fixed">
+            <div class="col-content" style="width:100%">
+                <div class="inner">
+                    <article class="article-list">
+                        <input type="hidden" value="@Model.BlogTypeID" id="blogtypeid" />
+                        <section class="article-item">
+                            <aside class="title" style="line-height:1.5;">
+                                <h4 th:text="${essay.getEssaytitle()}"></h4>
+                                <p class="fc-grey fs-14">
+                                    <small >
+                                        作者：<a href="javascript:void(0)" target="_blank" class="fc-link" th:text="${essay.getEssayauthor()}">Canaan</a>
+                                    </small>
+                                    <small class="ml10">围观群众：<i class="readcount" th:text="${essay.getVisits()}">37</i></small>
+                                    <small class="ml10" >更新于 <label th:text="${essay.getUpdatetime()}">2018-05-22:17:30:24</label> </small>
+                                </p>
+                            </aside>
+                            <div class="time mt10" style="padding-bottom:0;">
+                                <span class="day">22</span>
+                                <span class="month fs-18">5<small class="fs-14">月</small></span>
+                                <span class="year fs-18">2018</span>
+                            </div>
+
+                            <div class="content artiledetail" style="border-bottom: 1px solid #e1e2e0; padding-bottom: 20px;" >
+                                <div class="typo typo-selection" th:utext="${essay.getEssaycontent()}"></div>
+                                <div class="copyright mt20">
+<!--                                    非特殊说明, 本文版权归 ${essay.getEssayauthor()} 所有, 转载请注明出处.-->
+<!--                                    <p class="f-toe fc-black" th:text="'非特殊说明, 本文版权归 ' + ${essay.getEssayauthor()} + ' 所有, 转载请注明出处.'">-->
+                                    </p>
+                                    <div>
+                                        <!--博客信息-->
+                                        <div>
+                                            <img src="/images/admin.jpg" style="width: 70px;float: left;">
+
+                                            <div >
+                                                <ui>
+                                                    <li th:utext="'&emsp;标题：' + ${essay.getEssaytitle()}"></li>
+                                                    <li>&emsp;作者：<span th:text="${essay.getEssayauthor()}"></span><a href="#" th:href="@{/about}" target="_blank">（联系作者）</a></li>
+                                                    <li th:utext="'&emsp;非特殊说明, 本文版权归 ' + ${essay.getEssayauthor()} + ' 所有, 转载请注明出处.'"></li>
+                                                </ui>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+<!--                                    <p class="f-toe">-->
+<!--                                        博客主页：-->
+<!--                                        <a href="#"></a>-->
+<!--                                    </p>-->
+                                </div>
+                                <div id="aplayer" style="margin:5px 0"></div>
+<!--                                <h6>延伸阅读</h6>-->
+<!--                                <ol class="b-relation">-->
+
+<!--                                </ol>-->
+                            </div>
+                            <div class="bdsharebuttonbox share" data-tag="share_1">
+                                <ul>
+                                    <li class="f-praise"><span><a class="s-praise"></a></span></li>
+                                    <li class="f-weinxi"><a class="s-weinxi" data-cmd="weixin"></a></li>
+                                    <li class="f-sina"><a class="s-sina" data-cmd="tsina"></a></li>
+                                    <li class="f-qq" href="#"><i class="fa fa-qq"></i></li>
+                                    <li class="f-qzone"><a class="s-qzone" data-cmd="qzone"></a></li>
+                                </ul>
+                            </div>
+                            <div class="f-cb"></div>
+                            <div class="mt20 f-fwn fs-24 fc-grey comment" style="border-top: 1px solid #e1e2e0; padding-top: 20px;">
+                            </div>
+                            <fieldset class="layui-elem-field layui-field-title">
+                                <legend>发表评论</legend>
+                                <div class="layui-field-box">
+                                    <div class="leavemessage" style="text-align:initial">
+                                        <form class="layui-form blog-editor" action="">
+                                            <input type="hidden" name="articleid" id="articleid" value="@Model.ID">
+                                            <div class="layui-form-item">
+                                                <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea layui-hide"></textarea>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <button class="layui-btn" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">提交留言</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <ul class="blog-comment" id="blog-comment"></ul>
+                        </section>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="grid-footer">
+        <div class="footer-fixed">
+            <div class="copyright">
+                <div class="info">
+                    <div class="contact">
+                        <a href="javascript:void(0)" class="github" target="_blank"><i class="fa fa-github"></i></a>
+                        <a href="#" class="qq" target="_blank" ><i class="fa fa-qq"></i></a>
+                        <a href="#" class="email" target="_blank" ><i class="fa fa-envelope"></i></a>
+                        <a href="javascript:void(0)" class="weixin"><i class="fa fa-weixin"></i></a>
+                    </div>
+                    <p class="mt05">
+                        Copyright &copy; 2018-2018 燕十三 All Rights Reserved V.3.1.3 蜀ICP备18008600号
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="layui/layui.js"></script>
+    <script src="js/yss/gloable.js"></script>
+    <script src="js/plugins/nprogress.js"></script>
+    <script src="js/pagecomment.js"></script>
+    <script>NProgress.start();</script>
+    <script> 
+        window.onload = function () {
+            NProgress.done();
+
+        };
+    </script>
+    <script th:inline="javascript">
+
+        // var s = [[${essay.getEssaycontent()}]];
+        // console.log(marked(s));
+        // document.getElementById('essaycontent').innerHTML =
+        //     marked(s);
+        // console.log(marked(s));
+        // hljs.initHighlightingOnLoad();
+    </script>
+</body>
+</html>
