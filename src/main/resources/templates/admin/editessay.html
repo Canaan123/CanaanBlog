@@ -94,7 +94,6 @@
 
     <script type="text/javascript">
         //初始化Markdown编辑器
-        var contentEditor;
         $(function() {
             contentEditor = editormd("md-content", {
                 width   : "100%",//宽度
@@ -103,7 +102,7 @@
                 path    : "/editormd/lib/",//依赖的包路径
                 imageUpload: true,
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                imageUploadURL: "/editor/imageUpload"
+                imageUploadURL: "/admin/imageUpload"
             });
         });
 
@@ -198,7 +197,7 @@
 
                 },
                 error : function (){
-                    alert("系统错误");
+
                 }
             });
         }

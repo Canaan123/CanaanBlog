@@ -1,6 +1,8 @@
 package com.example.cananblog.bean;
 
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
+@ApiModel("文章实体类")
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,5 +26,6 @@ public class Essay implements Serializable {
     private long visits;
     private String essaypicture;
     private String essaydescribe;
+
 
 }

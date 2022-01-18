@@ -1,5 +1,6 @@
 package com.example.cananblog.bean;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+@ApiModel("日志实体类")
 @Data
 public class Log implements Serializable {
 //    long id;
@@ -23,5 +25,8 @@ public class Log implements Serializable {
         this.detail = detail;
         this.time = time;
         this.backstage = backstage;
+    }
+
+    public Log() {
     }
 }

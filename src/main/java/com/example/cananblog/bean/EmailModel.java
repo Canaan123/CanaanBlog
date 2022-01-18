@@ -1,9 +1,11 @@
 package com.example.cananblog.bean;
 
+import io.swagger.annotations.ApiModel;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
+@ApiModel("邮件实体类")
 @Component
 public class EmailModel implements Serializable {
 

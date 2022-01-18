@@ -94,6 +94,7 @@
                                             <td>
                                                 <button class="btn btn-info" onclick="goModify(this)">修改</button>
                                                 <button class="btn btn-danger" onclick="deletebyid(this)">删除</button>
+                                                <button class="btn btn-info" onclick="downloadit(this)">下载</button>
                                             </td>
                                         </tr>
 
@@ -134,8 +135,17 @@
     <script src="/assets/js/init-scripts/data-table/datatables-init.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script>
+        // 通过id下载文章
+        function downloadit(obj){
+            console.log(123)
+            var x = $(obj).parent().parent().find("td");
+            var y = x.eq(0).text();//文章的id
+            window.location.href="/downloadEssay?essayid=" + y;
+        }
 
 
+
+        // 通过id删除文章
         function deletebyid(obj){
             var x = $(obj).parent().parent().find("td");
             var y = x.eq(0).text();//文章的id

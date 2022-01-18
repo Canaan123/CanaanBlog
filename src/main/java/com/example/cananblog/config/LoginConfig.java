@@ -22,19 +22,24 @@ import java.net.Authenticator;
 @EnableWebSecurity
 public class LoginConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    VerificationCodeFilter verificationCodeFilter;
+//    @Autowired
+//    VerificationCodeFilter verificationCodeFilter;
     @Autowired
     MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
     @Autowired
     MyAuthenticationErrorHandler myAuthenticationErrorHandler;
+    @Autowired
+    ImageCodeFilter imageCodeFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(imageCodeFilter, UsernamePasswordAuthenticationFilter.class);
+
         // 首页所有人都可以访问，后台只有对应权限的人才能访问
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/admin/**").hasRole("vip");//开发中暂时关闭
+                .antMatchers("/admin/downloadEssay").permitAll(); // 允许所有人下载
+//                .antMatchers("/admin/**").hasRole("vip");//开发中暂时关闭
         // 跳转登录界面
         http.formLogin().loginPage("/login")// 登录界面url
                 .loginProcessingUrl("/login")  // 登录验证url
@@ -44,7 +49,6 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(myAuthenticationErrorHandler);
 
-        http.addFilterBefore(verificationCodeFilter, UsernamePasswordAuthenticationFilter.class);
 
         //http.formLogin();
         http.logout().permitAll();

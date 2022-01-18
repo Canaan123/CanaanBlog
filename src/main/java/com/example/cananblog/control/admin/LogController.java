@@ -29,14 +29,10 @@ public class LogController {
     RedisTemplate<String,Object> redisTemplate;
 
     @GetMapping("/log")
-    public String ShowLog(Model model,@RequestParam(defaultValue = "1",value = "pageNum") Integer pageNum){
+    public String ShowLog(Model model){
         // 读取redis里key为log的list
-        PageHelper.startPage(pageNum,5);
         List<Log> logs = (List) redisTemplate.opsForList().range("logs",0,-1);
-
-        PageInfo<Log> pageInfo = new PageInfo<>(logs);
-
-        model.addAttribute("loglist",pageInfo);
+        model.addAttribute("loglist",logs);
         return "admin/log";
     }
 

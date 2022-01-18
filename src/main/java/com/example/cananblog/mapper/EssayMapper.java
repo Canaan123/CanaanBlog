@@ -4,6 +4,7 @@ import com.example.cananblog.bean.Essay;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -13,6 +14,8 @@ public interface EssayMapper {
     List<Essay> queryEssayList();
     // 添加一个文章
     void addEssay(Essay essay);
+    // 查询所有文章的id
+    List<Long> queryEssayId();
     // 通过id删除对应文章
     void deleteEssayById(long id);
     // 查询对应id的文章
@@ -23,8 +26,8 @@ public interface EssayMapper {
     long queryEssayNumber();
     // 查找最后一个id
     long queryLastId();
-    // 自增访问量
-    void increaseVisits(long id);
+    // 增加访问量
+    void increaseVisits(HashMap map);
     // 查询文章总阅读量
     long queryVisits();
     // 找到含有对应标签的文章

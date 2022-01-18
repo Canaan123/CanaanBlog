@@ -105,5 +105,7 @@ public class VerificationCode {
 
     public static void output(BufferedImage image, OutputStream out) throws IOException {
         ImageIO.write(image, "JPEG", out);
+        out.flush();
+        out.close();
     }
 }

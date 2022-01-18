@@ -4,6 +4,7 @@ import com.example.cananblog.bean.Essay;
 import com.example.cananblog.mapper.EssayMapper;
 import com.example.cananblog.mapper.InformationMapper;
 import com.example.cananblog.utils.FileUpload;
+import com.example.cananblog.utils.IpUtil;
 import com.example.cananblog.utils.SaveFile;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,17 @@ public class EditorController {
     EssayMapper essayMapper;
     @Autowired
     InformationMapper informationMapper;
+    @Autowired
+    IpUtil ipUtil;
     @Resource
     RedisTemplate<String,Object> redisTemplate;
 
     @Value("${file.essayurl}")
     String essayurl;
+    @Value("${file.pictureurl}")
+    String pictureurl;
+
+
 
 
 
@@ -137,11 +144,12 @@ public class EditorController {
         try {
             wirte = response.getWriter();
             //文件存放的路径
-            String path = "E:\\file\\pic";
-            String url = "http://localhost:8081"
-                    + request.getContextPath()
-                    + "/upload/"
-                    + FileUpload.upload(file, path);
+            String path = pictureurl;
+            String url = ipUtil.getUrl() + "/upload/" + FileUpload.upload(file, path);
+//            String url = "http://localhost:8081"
+//                    + request.getContextPath()
+//                    + "/upload/"
+//                    + FileUpload.upload(file, path);
             System.out.println(path);
             System.out.println(url);
             json.put("success", 1);

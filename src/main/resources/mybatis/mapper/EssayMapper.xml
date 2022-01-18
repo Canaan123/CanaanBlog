@@ -11,6 +11,9 @@
         insert into essay(essaytitle,essaycontent,essayauthor,label,updatetime,original,essaypicture,essaydescribe) values(
         #{essaytitle},#{essaycontent},#{essayauthor},#{label},#{updatetime},#{original},#{essaypicture},#{essaydescribe})
     </insert>
+    <select id="queryEssayId" resultType="long">
+        select essayid from essay;
+    </select>
     <delete id="deleteEssayById" parameterType="long">
         delete from essay where essayid = #{id}
     </delete>
@@ -28,8 +31,8 @@
 --         select last_insert_id();
         select max(essayid) from essay;
     </select>
-    <update id="increaseVisits" parameterType="long">
-        update essay set visits = visits + 1 where essayid = #{id};
+    <update id="increaseVisits" parameterType="hashmap">
+        update essay set visits = visits + #{num} where essayid = #{essayid};
     </update>
     <select id="queryVisits" resultType="long">
         select sum(visits) from essay;
