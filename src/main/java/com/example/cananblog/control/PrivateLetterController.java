@@ -1,8 +1,10 @@
 package com.example.cananblog.control;
 
+import com.example.cananblog.bean.EmailModel;
 import com.example.cananblog.bean.Message;
 import com.example.cananblog.bean.PrivateMessage;
 import com.example.cananblog.mapper.ReviewMapper;
+import com.example.cananblog.utils.MailSendUtils;
 import com.example.cananblog.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,11 @@ public class PrivateLetterController {
 
     @Autowired
     ReviewMapper reviewMapper;
+
+    @Autowired
+    EmailModel emailModel;
+    @Autowired
+    MailSendUtils mailSendUtils;
 
     @RequestMapping("/privateletter")
     public String ShowPrivateLetter(){
@@ -34,7 +41,10 @@ public class PrivateLetterController {
         String formatTime = TimeUtil.getCurrentDateTime();
         Message message = new PrivateMessage(content,formatTime,qq);
         reviewMapper.addPrivateMessage(message);
-        return "添加成功";
+        emailModel.setEmailContent("你有一条私信\t\t\n" + content + "\t\t\n联系qq号：" + qq);
+        emailModel.setRecieverEmailAddress("1106126069@qq.com");
+        mailSendUtils.sendEmailAsText(emailModel);
+        return "发送成功";
     }
 
 }

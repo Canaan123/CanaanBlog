@@ -2,6 +2,7 @@ package com.example.cananblog.mapper;
 
 import com.example.cananblog.bean.Essay;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Mapper
 @Repository
-public interface EssayMapper {
+public interface EssayMapper{
     // 查询整个文章
     List<Essay> queryEssayList();
     // 添加一个文章
