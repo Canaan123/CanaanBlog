@@ -148,7 +148,7 @@ public class EssayController {
         // 保存文章md
         SaveFile saveFile = new SaveFile();
         saveFile.SavaAsmd(id,text,essayurl);
-        Essay essay = new Essay(id,title,text,author,labels,formatTime,original,0,path,essaydescribe);
+        Essay essay = new Essay(id,title,text,author,labels,formatTime,original,0,path,essaydescribe,0);
         essayMapper.modifyEssayById(essay);
         redisTemplate.delete("essays");
         redisTemplate.delete("essayby" + id);

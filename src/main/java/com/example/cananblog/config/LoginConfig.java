@@ -48,8 +48,6 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(myAuthenticationErrorHandler);
-
-
         //http.formLogin();
         http.logout().permitAll();
         http.csrf().disable();// 禁用跨站攻击

@@ -49,4 +49,7 @@
     <select id="queryMatchingEssay" resultType="Essay">
         select *from essay where essaytitle like #{text} || essaydescribe like #{text};
     </select>
+    <update id="addLikeNumber" parameterType="long">
+        update essay set likenumber = likenumber + 1 where essayid = #{essayid};
+    </update>
 </mapper>

@@ -42,6 +42,6 @@ public class Essay implements Serializable {
     private String essaypicture;
     @Field(type = FieldType.Text)
     private String essaydescribe;
-
+    private long likenumber;
 
 }

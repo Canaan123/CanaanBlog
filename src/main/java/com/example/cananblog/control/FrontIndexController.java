@@ -18,4 +18,8 @@ public class FrontIndexController {
         model.addAttribute("blogdescribe",informationMapper.queryBlogDescribe());
         return "index";
     }
+    @RequestMapping("/test")
+    public String go(){
+        return "test";
+    }
 }

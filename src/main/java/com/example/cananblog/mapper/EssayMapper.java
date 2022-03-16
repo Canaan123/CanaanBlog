@@ -39,4 +39,6 @@ public interface EssayMapper{
     long queryOriginalNumber();
     // 对查询的结果进行匹配
     List<Essay> queryMatchingEssay(String text);
+    // 点赞量增加
+    void addLikeNumber(long essayid);
 }

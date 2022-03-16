@@ -19,7 +19,8 @@ import java.util.List;
 @EnableScheduling
 public class SaticScheduleTask {
 
-    static final long UpdateEssayVisitsTime = 60000 * 30; // 30分钟
+    static final long UpdateEssayVisitsTime = 60000 * 1; // 一分钟
+    static final int UpdateHotEssays = 60000 * 30; // 30分钟
     @Autowired
     EssayMapper essayMapper;
     @Autowired
@@ -39,11 +40,20 @@ public class SaticScheduleTask {
                 hashMap.put("essayid",essayid);
                 hashMap.put("num",num);
                 essayMapper.increaseVisits(hashMap); // 数据库对应文章访问量增加num
+                redisTemplate.delete("essayby" + essayid);
             }
         }
-//        System.out.println(TimeUtil.getCurrentDateTime());
     }
-    // 配置线程池任务调度器
+
+    /**
+     *
+     */
+    @Scheduled(fixedRate = UpdateHotEssays)
+    public void UpdateRedisTask(){
+        // 删除热点文章key
+        redisTemplate.delete("hotessays");
+    }
+//     配置线程池任务调度器
     @Bean
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();

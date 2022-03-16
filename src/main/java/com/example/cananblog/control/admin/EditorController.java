@@ -118,7 +118,7 @@ public class EditorController {
         // 保存文章md
         SaveFile saveFile = new SaveFile();
         saveFile.SavaAsmd(id,text,essayurl);
-        Essay essay = new Essay(id,title,text,author,labels,formatTime,original,0,path,essaydescribe);
+        Essay essay = new Essay(id,title,text,author,labels,formatTime,original,0,path,essaydescribe,0);
         essayMapper.addEssay(essay);
 
         // 删除临时文章记录

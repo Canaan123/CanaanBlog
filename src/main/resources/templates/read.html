@@ -59,7 +59,7 @@
                                     <small >
                                         作者：<a href="javascript:void(0)" target="_blank" class="fc-link" th:text="${essay.getEssayauthor()}">Canaan</a>
                                     </small>
-                                    <small class="ml10">围观群众：<i class="readcount" th:text="${essay.getVisits()}">37</i></small>
+                                    <small class="ml10">围观群众：<i class="readcount" th:text="${essay.getVisits()} + 1">37</i></small>
                                     <small class="ml10" >更新于 <label th:text="${essay.getUpdatetime()}">2018-05-22:17:30:24</label> </small>
                                 </p>
                             </aside>
@@ -103,13 +103,17 @@
 <!--                                </ol>-->
                             </div>
                             <div class="bdsharebuttonbox share" data-tag="share_1">
-                                <ul>
-                                    <li class="f-praise"><span><a class="s-praise"></a></span></li>
-                                    <li class="f-weinxi"><a class="s-weinxi" data-cmd="weixin"></a></li>
-                                    <li class="f-sina"><a class="s-sina" data-cmd="tsina"></a></li>
-                                    <li class="f-qq" href="#"><i class="fa fa-qq"></i></li>
-                                    <li class="f-qzone"><a class="s-qzone" data-cmd="qzone"></a></li>
-                                </ul>
+<!--                                <strong>-->
+                                    <h3 th:text="${essay.getLikenumber()}" id="essaynumber"></h3>
+                                    <img src="/img/zan.jpeg" height="12%" width="12%" id="essaylike">
+<!--                                </strong>-->
+<!--                                <ul>-->
+<!--                                    <li class="f-praise"><span><a class="s-praise"></a></span></li>-->
+<!--                                    <li class="f-weinxi"><a class="s-weinxi" data-cmd="weixin"></a></li>-->
+<!--                                    <li class="f-sina"><a class="s-sina" data-cmd="tsina"></a></li>-->
+<!--                                    <li class="f-qq" href="#"><i class="fa fa-qq"></i></li>-->
+<!--                                    <li class="f-qzone"><a class="s-qzone" data-cmd="qzone"></a></li>-->
+<!--                                </ul>-->
                             </div>
                             <div class="f-cb"></div>
                             <div class="mt20 f-fwn fs-24 fc-grey comment" style="border-top: 1px solid #e1e2e0; padding-top: 20px;">
@@ -121,7 +125,7 @@
                                         <form class="layui-form blog-editor" action="">
                                             <input type="hidden" name="articleid" id="articleid" value="@Model.ID">
                                             <div class="layui-form-item">
-                                                <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea layui-hide"></textarea>
+                                                <textarea name="editorContent" lay-verify="content" id="remarkEditor" placeholder="请输入内容" class="layui-textarea"></textarea>
                                             </div>
                                             <div class="layui-form-item">
                                                 <button class="layui-btn" lay-submit="formLeaveMessage" lay-filter="formLeaveMessage">提交留言</button>
@@ -158,15 +162,36 @@
     <script src="js/yss/gloable.js"></script>
     <script src="js/plugins/nprogress.js"></script>
     <script src="js/pagecomment.js"></script>
+    <script src="/js/jquery.min.js"></script>
     <script>NProgress.start();</script>
     <script>
         window.onload = function () {
             NProgress.done();
 
         };
+
     </script>
     <script th:inline="javascript">
+        essaylike.onclick=function(){
+            var s = [[${essay.getEssayid()}]];
+            $.ajax({
+                type : "post",
+                url : "/essayLike",
+                data : "essayid=" + s,
+                success : function (message){
+                    if(message == "点赞成功"){
+                        var s1 = $("#essaynumber").html();
+                        var s2 = parseInt(s1) + 1;
+                        $("#essaynumber").text(s2);
+                    }
 
+                    alert(message);
+                },
+                error : function (){
+                    alert("系统错误");
+                }
+            });
+        }
         // var s = [[${essay.getEssaycontent()}]];
         // console.log(marked(s));
         // document.getElementById('essaycontent').innerHTML =

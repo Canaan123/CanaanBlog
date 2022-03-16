@@ -55,11 +55,12 @@ public class FrontEssayController {
     public String GoEssay(Model model,@RequestParam(defaultValue = "1",value = "pageNum") Integer pageNum){
 
         // 查询访问量排名前6的文章
-        List<Essay> hotessay = essayMapper.queryhotEssay();
+        List<Essay> hotessay = redisServiceUtil.getRedisHotEssays();
         model.addAttribute("hotessay",hotessay);
         // 引入分页
         PageHelper.startPage(pageNum,5);
         List<Essay> essays = essayMapper.queryEssayList();
+//        List<Essay> essays = redisServiceUtil.getRedisEssays();
 
         PageInfo<Essay> pageInfo = new PageInfo<>(essays);
         model.addAttribute("essays",pageInfo);
@@ -74,23 +75,22 @@ public class FrontEssayController {
      * @return
      */
     @RequestMapping("readessayid={id}")
-    public String ShowEssay(@PathVariable("id")long id, Model model,HttpServletRequest request){
+    public String ShowEssay(@PathVariable("id")long essayId, Model model,HttpServletRequest request){
         String ipAddr = IpUtil.getIpAddr(request);
-        String IpVisitEssay = "isViewd:" + id + ":" + ipAddr; // ip近期访问文章id
-        String EssayviewCount = "viewCount:" + id; // 文章id浏览量
+        String IpVisitEssay = "isViewd:" + essayId + ":" + ipAddr; // ip近期访问文章id
+        String EssayviewCount = "viewCount:" + essayId; // 文章id浏览量
         // 该ip十分钟内没有浏览过该文章,浏览记录+1
         if(!redisTemplate.hasKey(IpVisitEssay)){
             redisTemplate.opsForValue().set(IpVisitEssay,1,10, TimeUnit.MINUTES);
             if(redisTemplate.hasKey(EssayviewCount)){
                 redisTemplate.opsForValue().increment(EssayviewCount);
-                System.out.println(redisTemplate.opsForValue().get(EssayviewCount));
             }
             else{
                 redisTemplate.opsForValue().set(EssayviewCount,1);
             }
         }
 
-        Essay essay = redisServiceUtil.getRedisEssayById(id);
+        Essay essay = redisServiceUtil.getRedisEssayById(essayId);
         essay.setEssaycontent(MarkdownUtils.markdownToHtmlExtensions(essay.getEssaycontent()));// md转化为html
         essay.setVisits(essay.getVisits()+(Integer)redisTemplate.opsForValue().get(EssayviewCount)); // 文章id访问量 = redis中访问量+数据库中访问量
         model.addAttribute("essay",essay);
@@ -103,7 +103,6 @@ public class FrontEssayController {
      * @param text
      * @return
      */
-
     @RequestMapping("/searchessay")
     public String SearchEssay(String text,Model model){
         model.addAttribute("text",text);
@@ -139,6 +138,13 @@ public class FrontEssayController {
         return "category";
     }
 
+    /**
+     * 文章下载
+     * @param essayid
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @GetMapping ("/downloadEssay")
     public void DownloadEssayById(String essayid, HttpServletRequest request, HttpServletResponse response) throws IOException {
         //获取文件的绝对路径
@@ -160,6 +166,23 @@ public class FrontEssayController {
         os.flush();
         os.close();
     }
+    /**
+     * 点赞量增加
+     */
+
+    @ResponseBody
+    @PostMapping("/essayLike")
+    public String essayLike(Long essayid,HttpServletRequest request){
+        String ipAddr = IpUtil.getIpAddr(request);
+        String key = ipAddr + "::" + essayid + ":" + "like";
+        if(redisTemplate.hasKey(key)){
+            return "不可以重复点赞哦";
+        }
+        redisTemplate.opsForValue().set(key,1,3,TimeUnit.DAYS);
+        essayMapper.addLikeNumber(essayid);
+        return "点赞成功";
+    }
+
 
 
 

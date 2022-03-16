@@ -30,13 +30,23 @@ public class LogAspect {
     @Autowired
     RedisTemplate redisTemplate;
 
+    /**
+     * 扫描带@LogAnnotation的类，并作为把其作为切点
+     */
     @Pointcut("@annotation(com.example.cananblog.log.LogAnnotation)")
     public void pt(){
 
     }
 
+    /**
+     * 环绕通知 包括前置操作和后置操作
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
     @Around("pt()")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
+        // 开始时间
         Long beginTime = System.currentTimeMillis();
          // 执行方法
         Object result = joinPoint.proceed();

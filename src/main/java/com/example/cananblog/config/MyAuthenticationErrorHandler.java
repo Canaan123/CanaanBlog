@@ -35,10 +35,10 @@ public class MyAuthenticationErrorHandler implements AuthenticationFailureHandle
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         String ip = IpUtil.getIP();
-//        emailModel.setEmailTheme("登录博客后台系统");
-//        emailModel.setEmailContent("登录失败\t" + "IP地址: " + ip);
-//        emailModel.setRecieverEmailAddress("1106126069@qq.com");
-//        mailSendUtils.sendEmailAsText(emailModel);
+        emailModel.setEmailTheme("登录博客后台系统");
+        emailModel.setEmailContent("登录失败\t" + "IP地址: " + ip);
+        emailModel.setRecieverEmailAddress("1106126069@qq.com");
+        mailSendUtils.sendEmailAsText(emailModel);
         httpServletResponse.sendRedirect("/login?error=true");
 //        httpServletResponse.sendRedirect("/login?error=true");
     }
